@@ -11,8 +11,10 @@ import UpdateProducts from './pages/updateProducts/UpdateProducts';
 const App = () => {
   return (
    <MyState>
+    
 <Router>
   <Routes>
+    
   <Route path="/" element={<Home />} />
           <Route path="/order" element={<Order />} />
           <Route path="/cart" element={<Cart />} />

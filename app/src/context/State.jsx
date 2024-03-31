@@ -7,7 +7,7 @@ const [loading,setLoading]= useState(false)
 
 
     return (
-<Context.Provider value={{mode,toggleMode}}>
+<Context.Provider value={{mode}}>
 {props.children}
 </Context.Provider>
   )

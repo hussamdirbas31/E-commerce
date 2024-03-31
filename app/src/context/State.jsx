@@ -4,10 +4,19 @@ const State = (props) => {
 const [mode,setMode]= useState('light')
 const [loading,setLoading]= useState(false)
 
-
+const toggleMode = () => {
+  if(mode === 'light'){
+    setMode('dark')
+    document.body.style.backgroundColor =  "rgb(46,46,46)"
+  }
+  else{
+    setMode('light')
+    document.body.style.backgroundColor = "white"
+  }
+}
 
     return (
-<Context.Provider value={{mode}}>
+<Context.Provider value={{mode,toggleMode}}>
 {props.children}
 </Context.Provider>
   )

@@ -1,11 +1,19 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Search from './search/Search'
 import { IoMenuOutline } from "react-icons/io5";
 import { FaTimes } from "react-icons/fa";
+import { IoCartOutline } from "react-icons/io5";
+
 import { useState } from 'react';
+import Context from '../context/Context'
+import { BsFillCloudSunFill } from 'react-icons/bs'
+import { FiSun } from 'react-icons/fi'
+
 const Navbar = () => {
   const [nav , setNav] = useState(false)
+  const context = useContext(Context)
+  const {mode,toggleMode} = context
   const handleClick = ()=>{
     setNav(!nav)
   }
@@ -16,37 +24,78 @@ const Navbar = () => {
   ]
 
   return (
-   <nav className=' bg-transparent hover:bg-white grid grid-cols-2 p-5 items-center'>
-    <h3 className='   text-4xl p-[2%]'><Link to="/">Artizia</Link></h3>
-    <div className='hidden md:flex '><Search/></div>
-    <ul className=' hidden md:flex flex-row gap-6 p-[2%] '>
+   <nav style={{ backgroundColor: mode === 'dark' ? '#4A4A4A' : '', color: mode === 'dark' ? 'white' : '', }}
+    className='  bg-green-400 hover:bg-white grid grid-cols-2 pl-4 items-center'>
+    
+    
+     {/*...........................................................................................  */}
+    <Link to="/"  className='text-7xl p-[1%] w-[40%] '><h3  >Artizia</h3></Link>
+    
+    {/* ....................................................................... */}
+    
+    
+
+    <div className='hidden md:flex flex-row  gap-5  relative left-5  w-[50%] '>
+      <Search  style={{ backgroundColor: mode === 'dark' ? '#4A4A4A' : '', color: mode === 'dark' ? 'white' : '', }}/>
+      <button className='' onClick={toggleMode}>
+                    {mode === 'light' ?
+                      (<FiSun className='' size={30} />
+                      ) : 'dark' ?
+                        (<BsFillCloudSunFill size={30} />
+                        ) : ''}
+                  </button>    
+        <Link to='/cart'><IoCartOutline size={36}
+         className='  relative
+          left-4 top-[6%]'/>
+          
+          </Link>
+       
+       </div>
+       
+      {/*............................................................................................................................  */}
+  
+  
+  
+    <ul className={`hidden
+     md:flex flex-row gap-6 relative left-3 pb-[1%]
+        w-[50%] text-lg `  }>
    
     {navLinks.map((item)=>{
-      return <li ><Link to={`/${item.path}`}>
+      return <li  key={item.id} >
+        <Link className=' hover:text-red-600' to={`/${item.path}`}>
         {item.title}
-        </Link></li>
+        </Link>
+        </li>
     })}
     </ul>
     
-    {/* mobile code */}
-   <div onClick={handleClick} className=' z-50 md:hidden flex flex-row relative w-[20%]  left-[80%] bottom-[8%]'>
-   {nav ? <FaTimes className='relative top-1 text-white' size={35}/>:    <IoMenuOutline  className='relative top-1'  size={40}/>}      
+    {/*....................................... mobile code .................................................*/}
+   <div onClick={handleClick} 
+     style={{ backgroundColor: mode === 'dark' ? '#4A4A4A' : '', color: mode === 'dark' ? 'white' : '', }} 
+     className=' z-50 md:hidden flex flex-row relative w-[20%]  left-[80%] bottom-[8%]'>
+   
+
+   {nav ?
+    
+  <FaTimes className='relative top-1 text-white' size={35}/>:
+   
+   <IoMenuOutline  className='relative top-1'  size={40}/>}      
+       
    </div>
 
+   
    <ul className={`${
     nav ? 'text-white gap-20  opacity-100 translate-x-0 ' :
     'opacity-0 transform -translate-y-full '    
    }  transition-transform
      absolute left-0 top-0 w-full h-screen bg
     bg-zinc-800/90 flex flex-col  md:hidden justify-center  items-center text-3xl`}>
-   
     {navLinks.map((item)=>{
-      return <li ><Link  className=' hover:text-red-500 ' to={`/${item.path}`}>
+      return <li key={item.id} style={{ backgroundColor: mode === 'dark' ? '#282c34' : '', color: mode === 'dark' ? 'white' : '', }}  ><Link  className=' hover:text-red-500 ' to={`/${item.path}`}>
         {item.title}
         </Link></li>
     })} 
-    </ul>
-    
+    </ul> 
    </nav>
     )
 }

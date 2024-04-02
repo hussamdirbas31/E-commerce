@@ -25,18 +25,18 @@ const Navbar = () => {
 
   return (
    <nav style={{ backgroundColor: mode === 'dark' ? '#4A4A4A' : '', color: mode === 'dark' ? 'white' : '', }}
-    className='  bg-green-400 hover:bg-white grid grid-cols-2 pl-4 items-center'>
+    className='  shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] pb-4 z-50 sticky top-0   bg-white grid grid-cols-2 pl-8 items-center'>
     
     
      {/*...........................................................................................  */}
-    <Link to="/"  className='text-7xl p-[1%] w-[40%] '><h3  >Artizia</h3></Link>
+    <Link to="/"  className='text-6xl p-[1%] w-[40%] '><h3  >Artizia</h3></Link>
     
     {/* ....................................................................... */}
     
     
 
     <div className='hidden md:flex flex-row  gap-5  relative left-5  w-[50%] '>
-      <Search  style={{ backgroundColor: mode === 'dark' ? '#4A4A4A' : '', color: mode === 'dark' ? 'white' : '', }}/>
+      <Search  mode1={{ backgroundColor: mode === 'dark' ? '#4A4A4A' : '', color: mode === 'dark' ? 'white' : '', }}/>
       <button className='' onClick={toggleMode}>
                     {mode === 'light' ?
                       (<FiSun className='' size={30} />

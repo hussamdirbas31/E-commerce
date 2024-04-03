@@ -8,6 +8,12 @@ import MyState from './context/State';
 import ProductInfo from './pages/productInfo/ProductInfo';
 import AddProduct from './pages/addProduct/AddProduct';
 import UpdateProducts from './pages/updateProducts/UpdateProducts';
+import SignUp from './component/signup/SignUp';
+import Login from './component/login/Login'
+import NoPage from './pages/noPage/NoPage';
+import UpdateProduct from './pages/page/UpdateProduct';
+
+
 const App = () => {
   return (
    <MyState>
@@ -21,8 +27,12 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard/>} />
           <Route path='/addproduct' element={<AddProduct/>} />
           <Route path='/updateproduct' element={<UpdateProducts/>} />
-          <Route path="/productinfo/:id" element={<ProductInfo/>} />
-       
+          <Route path="/productinfo/:id" element={<ProductInfo />} />
+          <Route path="/signup" element={<SignUp/>}/>
+          <Route path='/login' element={<Login/>}/>
+          <Route path="/nopage" element={<NoPage/>}/>
+          <Route path='/updateproduct' element={<UpdateProduct/>}/>
+          <Route path='/addproduct' element={<AddProduct/>}/>
   </Routes>
 </Router>
    </MyState>

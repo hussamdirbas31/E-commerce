@@ -6,7 +6,7 @@ export default function Footer() {
     const context = useContext(myContext)
     const { toggleMode, mode } = context
     return (
-        <footer className="text-gray-600 body-font bg-white" style={{ backgroundColor: mode === 'dark' ? 'rgb(46,46,46)' : '', color: mode === 'dark' ? 'white' : '', }}>
+        <footer className="text-gray-600 body-font" style={{ backgroundColor: mode === 'dark' ? 'rgb(46,46,46)' : '', color: mode === 'dark' ? 'white' : '', }}>
             <div className="container px-5 py-24 mx-auto" >
                 <div className="flex flex-wrap md:text-left text-center order-first">
                     <div className="lg:w-1/4 md:w-1/2 w-full px-4">
@@ -57,7 +57,7 @@ export default function Footer() {
 
             </div>
 
-            <div className="bg-white" style={{ backgroundColor: mode === 'dark' ? 'rgb(55 57 61)' : '', color: mode === 'dark' ? 'white' : '', }}>
+            <div className="bg-white" style={{ backgroundColor: mode === 'dark' ? 'rgb(46,46,46)' : '', color: mode === 'dark' ? 'white' : '', }}>
                 <div className="container px-5 py-3 mx-auto flex items-center sm:flex-row flex-col">
                     <Link to={'/'} className='flex'>
                         <div className="flex ">

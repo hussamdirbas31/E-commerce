@@ -14,7 +14,7 @@ const array = [
 ]
 
   return (
-    <section className="relative  bg-red-600 flex flex-row justify-around">
+    <section className="  bg-red-600 flex flex-row ">
    {array.map((item)=>{
     return <Card1 key={item.id} name={item.name} image={item.image}/>
    })}

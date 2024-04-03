@@ -4,15 +4,15 @@ const Card1 = ({ name,image}) => {
   
   return (
     <div className=''>
-    <div>
-      <div>
+    
+      <div className='w-[50%]'>
         <img src={image} alt="" srcset="" />
       </div>
       <div>
         <h1>{name}</h1>
         <span>price</span>
       </div>
-    </div>
+    
     </div>
     )
 }

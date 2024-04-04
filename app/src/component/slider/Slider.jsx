@@ -3,11 +3,10 @@ import Slider from "react-slick";
 
 export default function SliderImage({Array}) {
   var settings = {
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 6,
     slidesToScroll: 3,
-    autoplay: true,
   };
   return (
     <div className=" w-[100%]  px-[2%] gap-5">

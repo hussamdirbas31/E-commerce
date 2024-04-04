@@ -15,8 +15,8 @@ const toggleMode = () => {
   }
 }
 
-    return (
-<Context.Provider value={{mode,toggleMode}}>
+ return (
+<Context.Provider value={{mode,toggleMode,loading,setLoading}}>
 {props.children}
 </Context.Provider>
   )

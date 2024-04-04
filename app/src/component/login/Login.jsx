@@ -1,15 +1,40 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import image from '../../assest/image2.jpeg'
-
+import Context from '../../context/Context'
+import {auth} from '../../firebase/FirebaseConfig'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import Loader from '../../component/loader/Loader'
 const Login = () => {
+ const [email,setEmail]=useState('')
+ const[password,setPassword]=useState('')
+ const context=useContext(Context)
+const {loading,setLoading}= context
+  const signin = async ()=>{
+ setLoading(true)
+ try{
+  const result= await signInWithEmailAndPassword(auth,email,password)
+  localStorage.setItem('user',JSON.stringify(result))
+  succes('signin successfully') 
+  window.location.href='/'
+  setLoading(false)
+}
+catch(error){
+  error('sigin faild')
+}
+setLoading(false)
+ }
+
+
+
+
   return (
     <div>
+      {loading&&<Loader/>}
     <div className="flex items-center justify-center h-screen bg-gray-100">
   <div
     className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0"
   >
-    {/* <!-- left side --> */}
     <div className="
     flex
     flex-col
@@ -67,14 +92,12 @@ const Login = () => {
 
       </div>
     </div>
-    {/* gfdgfd */}
     <div className="relative">
       <img
         src={image}
         alt="img"
         className="w-[400px] h-full hidden rounded-r-2xl md:block object-cover"
       />
-      {/* <!-- text on image  --> */}
       <div
         className="absolute hidden bottom-10 right-6 p-6 bg-white bg-opacity-30 backdrop-blur-sm rounded drop-shadow-lg md:block"
       >

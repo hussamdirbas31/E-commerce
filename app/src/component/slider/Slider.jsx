@@ -12,9 +12,9 @@ export default function SliderImage({Array}) {
     <div className=" w-[100%]  px-[2%] gap-5">
     <Slider {...settings}>
       {Array.map((item)=>{
-        return <div className=""  >
+        return <div className="" key={item.id} >
           <div className=" ml-8  " >
-          <img src={item.Image}  alt="" srcset="" />
+          <img src={item.Image}  alt="" />
           <h2 className=" flex flex-row  justify-center">{item.name}</h2>
           </div>
         </div>

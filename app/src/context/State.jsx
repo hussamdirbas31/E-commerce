@@ -1,8 +1,27 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import  Context  from './Context'
+
 const State = (props) => {
 const [mode,setMode]= useState('light')
 const [loading,setLoading]= useState(false)
+// const [currentUser,setCurrentUser]=useState('')
+
+// const signup = (email,password)=>{
+// createUserWithEmailAndPassword(auth,email,password)
+
+// }
+// useEffect(()=>{
+//   onAuthStateChanged(auth,(user)=>{
+//     setCurrentUser(user)
+//     setLoading(false)
+//   })
+//   return()=>{
+//     unsubscribe();
+//   }
+// })
+
+
+
 
 const toggleMode = () => {
   if(mode === 'light'){
@@ -16,8 +35,12 @@ const toggleMode = () => {
 }
 
  return (
-<Context.Provider value={{mode,toggleMode,loading,setLoading}}>
+<Context.Provider 
+value={
+  {mode,toggleMode,loading,setLoading}}>
+
 {props.children}
+
 </Context.Provider>
   )
 }

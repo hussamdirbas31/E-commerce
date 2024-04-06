@@ -6,7 +6,7 @@ const Card1 = ({ name,image}) => {
     <div className=''>
     
       <div className='w-[50%]'>
-        <img src={image} alt="" srcset="" />
+        <img src={image} alt="" />
       </div>
       <div>
         <h1>{name}</h1>

@@ -1,60 +1,39 @@
-import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom'
-import Context from '../../context/Context';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, fireDB } from '../../firebase/FirebaseConfig';
-import { Timestamp, addDoc, collection } from 'firebase/firestore';
-import Loader from '../../component/loader/Loader';
+import { React, useRef, useState } from "react";
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from "../../context/AuthContext";
+
 import image from '../../assest/image2.jpeg'
 
 
 function Signup() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const { signup } = useAuth();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-    const context = useContext(Context);
-    const { loading, setLoading } = context;
-  
-    const signup = async () => {
-        setLoading(true)
-        if ( email === "" || password === "") {
-            return toast.error("All fields are required")
-        }
-
-        try {
-            const users = await createUserWithEmailAndPassword(auth, email, password);
-
-
-            const user = {
-                uid: users.user.uid,
-                email: users.user.email,
-                time : Timestamp.now()
-            }
-            const userRef = collection(fireDB, "users")
-            await addDoc(userRef, user);
-            toast.success("Signup Succesfully")
-            setEmail("");
-            setPassword("");
-            setLoading(false)
-            
-        } catch (error) {
-            console.log(error)
-            setLoading(false)
-        }
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (passwordRef.current.value == 0) {
+      return setError("Passwords faild");
     }
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      
-        setEmail("");
-        setPassword("");
-      
-    };
+    try {
+      setError("");
+      setLoading(true);
+      await signup(emailRef.current.value, passwordRef.current.value);
+      navigate("/login");
+    } catch {
+      setError("Failed to create an account");
+    }
+    setLoading(false);
+  }
 
-    return (
+  return (
 
 <div>
-        {loading && <Loader/>}
-        <div className="flex items-center justify-center h-screen bg-gray-100">
+ {error && <div>Faild</div> }
+<div className="flex items-center justify-center h-screen bg-gray-100">
       <div
         className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0"
       >
@@ -68,23 +47,22 @@ function Signup() {
           <div className="py-4">
             <span className="mb-2 text-md">Email</span>
             <input
-            value={email}
-              onChange={(e) => setEmail(e.target.value)}
+           
               type="text"
               className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
               name="email"
               id="email"
+              ref={emailRef}
             />
           </div>
           <div className="py-4">
             <span className="mb-2 text-md">Password</span>
             <input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               type="password"
               name="pass"
               id="pass"
               className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+              ref={passwordRef}
             />
             
           </div>
@@ -98,16 +76,20 @@ function Signup() {
           </div>
          
           <button
-            className="w-full bg-black text-white p-2
-             rounded-lg mb-6 hover:bg-white hover:text-black hover:border-gray-300"
-           
-             onClick={signup}
-         
+            className="w-full
+             bg-black text-white p-2
+             rounded-lg mb-6
+              hover:bg-white
+               hover:text-black 
+               hover:border-gray-300"
+           disabled={loading}
+          
          >
             Signup
           </button>
          
           <button
+
             className="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-black hover:text-white"
           >
             <img src={image} alt="img" className="w-6 h-6 inline mr-2" />

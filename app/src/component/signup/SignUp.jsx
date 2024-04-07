@@ -1,25 +1,54 @@
-import { React, useRef, useState } from "react";
+import { React,useRef,useState,useContext} from "react";
 import { Link, useNavigate } from 'react-router-dom'
-
 import image from '../../assest/image2.jpeg'
+import Layout from '../../component/layout/Layout'
 
 
 function Signup() {
- 
- 
-  const emailInputRef = useRef()
- const passwordInputRef= useRef()
- const submitHandler= (event)=>{
-  event.preventDefault()
-const enteredEmail = emailInputRef.current.value
-const enteredPassword = passwordInputRef.current.value
-// ghfhgfhfghfghgfhf
-fetch('')
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const [isLoading, setIsloading]= useState(false)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+   setIsloading(true)
+    try {
+      const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCu4Vie0NPdD0QgRTtXH5mmQHAvBlsxf0s', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          returnSecureToken: true
+        })
+      });
+
+      setIsloading(false)
+      if (response.ok) {
+        const data = await response.json();
+      
+        console.log(data)
+       return data
+      
+      } else {
+        console.error('Signup failed:', data.error);
+        const errordata = 'Auth is faild'
+        throw new Error(errordata)
+      }
+
+    } catch (error) {
+      alert(error.messsage)
+    }
+  };
 
 
-}
-  return (
 
+
+return (
+  <Layout>
 <div>
 <div className="flex items-center justify-center h-screen bg-gray-100">
       <div
@@ -31,7 +60,7 @@ fetch('')
           <span className="font-light text-gray-400 mb-8">
             Welcom back! Please enter your details
           </span>
-          <form action="" > 
+          <form action=""  onSubmit={handleSubmit}> 
           <div className="py-4">
             <span className="mb-2 text-md">Email</span>
             <input
@@ -40,7 +69,8 @@ fetch('')
               className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
               name="email"
               id="email"
-              ref={emailInputRef}
+              ref={emailRef}
+
             />
           </div>
           <div className="py-4">
@@ -50,8 +80,9 @@ fetch('')
               name="pass"
               id="pass"
               className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-              ref={passwordInputRef}
-            />
+              
+              ref={passwordRef}
+              />
             
           </div>
 
@@ -62,19 +93,29 @@ fetch('')
             </div>
             
           </div>
-         
-          <button
+         {!isLoading&& <button
             className="w-full
              bg-black text-white p-2
              rounded-lg mb-6
               hover:bg-white
                hover:text-black 
                hover:border-gray-300"
-           onSubmit={submitHandler}
          >
             Signup
           </button>
-         
+          }
+         {isLoading &&  <button
+            className="w-full
+             bg-black text-white p-2
+             rounded-lg mb-6
+              hover:bg-white
+               hover:text-black 
+               hover:border-gray-300"
+         >
+            Loading
+          </button>}  
+          
+          
           <button
 
             className="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-black hover:text-white"
@@ -106,6 +147,7 @@ fetch('')
       </div>
     </div>
     </div>
+    </Layout>
 )
 }
 

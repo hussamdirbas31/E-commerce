@@ -8,13 +8,21 @@ import { useState } from 'react';
 import Context from '../context/Context'
 import { BsFillCloudSunFill } from 'react-icons/bs'
 import { FiSun } from 'react-icons/fi'
-
+import AuthContext from '../context/AuthContext';
 const Navbar = () => {
   const [nav , setNav] = useState(false)
   
+  const authCtx = useContext(AuthContext)
+
   const context = useContext(Context)
+  const isLoggedIn = authCtx.isLoggedIn
   
+
   const {mode,toggleMode} = context
+  
+  const logoutHandler = () =>{
+  authCtx.logout()
+  }  
   
   const handleClick = ()=>{
     setNav(!nav)
@@ -51,17 +59,20 @@ const Navbar = () => {
           left-4 top-[6%]'/>
           
           </Link>
-        
-
-      
+    <ul style={{ backgroundColor: mode === 'dark' ? '#4A4A4A' : '', color: mode === 'dark' ? 'white' : '', }}
+     className=' flex flex-row relative left-[20%] text-lg space-x-4 '>
+    {!isLoggedIn && 
+    <Link to='/login' 
+    className='  '>
+      Login</Link>
+}
+    {isLoggedIn && <Link to='/profile' className=' '>Profile</Link>
+    }
+    {isLoggedIn&& <button className=' ' onClick={logoutHandler}>Logout</button>}
+    </ul>
 
        </div>
-      {/*............................................................................................................................  */}
-      {/* bg-red-600
-        relative left-[15%]
-         flex items-center 
-         justify-center p-[2%] */}
-  
+      
   
     <ul className={`hidden
      md:flex flex-row gap-6 relative left-3 pb-[1%]
@@ -78,7 +89,6 @@ const Navbar = () => {
    
     </ul>
     
-    {/*....................................... mobile code .................................................*/}
    <div onClick={handleClick} 
      style={{ 
       backgroundColor: mode === 'dark' ? 

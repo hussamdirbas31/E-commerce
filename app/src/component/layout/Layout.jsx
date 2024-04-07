@@ -3,7 +3,6 @@ import Footer from '../footer/Footer'
 import Navbar from '../Navbar'
 function Layout({ children }) {
   return (
-    <AuthProvider>
     <div>
       
       <Navbar />
@@ -12,7 +11,6 @@ function Layout({ children }) {
       </div>
       <Footer />
     </div>
-    </AuthProvider>
   )
 }
 

@@ -4,15 +4,12 @@ import Search from './search/Search'
 import { IoMenuOutline } from "react-icons/io5";
 import { FaTimes } from "react-icons/fa";
 import { IoCartOutline } from "react-icons/io5";
-import useAuth  from '../context/AuthContext';
 import { useState } from 'react';
 import Context from '../context/Context'
 import { BsFillCloudSunFill } from 'react-icons/bs'
 import { FiSun } from 'react-icons/fi'
 
 const Navbar = () => {
-  const [error,setError]=useState("")
-  const {currentUser,logout}=useAuth()
   const [nav , setNav] = useState(false)
   
   const context = useContext(Context)
@@ -34,7 +31,6 @@ const Navbar = () => {
   return (
    <nav style={{ backgroundColor: mode === 'dark' ? '#4A4A4A' : '', color: mode === 'dark' ? 'white' : '', }}
     className='  shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] pb-4 z-50 sticky top-0   bg-white grid grid-cols-2 pl-8 items-center'>
-  {error && <div variant="danger">{error}</div>}
     
      {/*...........................................................................................  */}
     <Link to="/"  className='text-6xl p-[1%] w-[40%] '><h3  >Artizia</h3></Link>
@@ -57,10 +53,7 @@ const Navbar = () => {
           </Link>
         
 
-          <button className="" onClick={handleLogout}>
-          Log Out
-        </button>
- 
+      
 
        </div>
       {/*............................................................................................................................  */}
@@ -83,18 +76,6 @@ const Navbar = () => {
    
    })}
    
-    
-   {user?.user?.email === 
-   'hussamdirbas11@gmail.com'
-    ? <div>
-
-  <Link to={'/dashboard'} 
-  className="-m-2 block p-2 font-medium
-   text-gray-900" style={{ color: mode === 
-   'dark' ? 'white' : '', }}>
-    admin
-    </Link>
-    </div> : ""}  
     </ul>
     
     {/*....................................... mobile code .................................................*/}
@@ -127,13 +108,6 @@ const Navbar = () => {
     </Link></li>
     })} 
     
-     {user?.user?.email === 'hussamdirbas11@gmail.com'?
-     <Link to={'/dashboard'}
-     className=" font-medium "
-     style={{ color: mode === 'dark' ? 'white' : '', }}>
-     Admin
-     </Link> :
-     ""}       
      </ul> 
    
    </nav>

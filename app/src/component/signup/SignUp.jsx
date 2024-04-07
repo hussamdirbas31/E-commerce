@@ -1,38 +1,26 @@
 import { React, useRef, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from "../../context/AuthContext";
 
 import image from '../../assest/image2.jpeg'
 
 
 function Signup() {
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const { signup } = useAuth();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+ 
+ 
+  const emailInputRef = useRef()
+ const passwordInputRef= useRef()
+ const submitHandler= (event)=>{
+  event.preventDefault()
+const enteredEmail = emailInputRef.current.value
+const enteredPassword = passwordInputRef.current.value
+// ghfhgfhfghfghgfhf
+fetch('')
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    if (passwordRef.current.value == 0) {
-      return setError("Passwords faild");
-    }
-    try {
-      setError("");
-      setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
-      navigate("/login");
-    } catch {
-      setError("Failed to create an account");
-    }
-    setLoading(false);
-  }
 
+}
   return (
 
 <div>
- {error && <div>Faild</div> }
 <div className="flex items-center justify-center h-screen bg-gray-100">
       <div
         className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0"
@@ -43,7 +31,7 @@ function Signup() {
           <span className="font-light text-gray-400 mb-8">
             Welcom back! Please enter your details
           </span>
-          <form action="" onSubmit={handleSubmit}> 
+          <form action="" > 
           <div className="py-4">
             <span className="mb-2 text-md">Email</span>
             <input
@@ -52,7 +40,7 @@ function Signup() {
               className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
               name="email"
               id="email"
-              ref={emailRef}
+              ref={emailInputRef}
             />
           </div>
           <div className="py-4">
@@ -62,7 +50,7 @@ function Signup() {
               name="pass"
               id="pass"
               className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-              ref={passwordRef}
+              ref={passwordInputRef}
             />
             
           </div>
@@ -82,8 +70,7 @@ function Signup() {
               hover:bg-white
                hover:text-black 
                hover:border-gray-300"
-           disabled={loading}
-          
+           onSubmit={submitHandler}
          >
             Signup
           </button>

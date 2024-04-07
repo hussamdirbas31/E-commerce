@@ -2,37 +2,12 @@ import { React, useRef, useState } from "react";
 
 import { Link ,useNavigate,useLocation} from 'react-router-dom'
 import image from '../../assest/image2.jpeg'
-import { useAuth } from "../../context/AuthContext";
 
 import Loader from '../../component/loader/Loader'
 const Login = () => {
 
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const { login } = useAuth();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const redirectPath = location.state?.path || "/";
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    try {
-      setError("");
-      setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value);
-      navigate(redirectPath);
-    } catch {
-      setError("Failed to log in");
-    }
-
-    setLoading(false);
-  }
-
   return (
     <div>
-         {error && <div>{error}</div>}
     <div className="flex items-center justify-center h-screen bg-gray-100">
   <div
     className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0"
@@ -50,12 +25,11 @@ const Login = () => {
       <span className="font-light text-gray-400 mb-8">
         Welcom back! Please enter your details
       </span>
-      <form action="" onSubmit={handleSubmit}>
+      <form action="" >
       <div className="py-4">
         <span className="mb-2 text-md">Email</span>
         <input
           type="text"
-          value={email}
           className="
           w-full 
           p-2

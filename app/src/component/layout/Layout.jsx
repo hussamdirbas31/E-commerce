@@ -1,7 +1,6 @@
 import React from 'react'
 import Footer from '../footer/Footer'
 import Navbar from '../Navbar'
-import AuthProvider from '../../context/AuthContext'
 function Layout({ children }) {
   return (
     <AuthProvider>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router,Route , Routes,Navigate } from 'react-router-dom'
-import Home from './pages/home/Home'
+import Home from './pages/Home/Home'
 import Order from './pages/Order/Order';
 import Cart from './pages/cart/Cart';
 import Dashboard from './pages/Admin/Dashboard';
@@ -11,11 +11,9 @@ import UpdateProducts from './pages/updateProducts/UpdateProducts';
 import SignUp from './component/signup/SignUp';
 import Login from './component/login/Login'
 import NoPage from './pages/noPage/NoPage';
-import AuthProvider from "./context/AuthContext";
 const App = () => {
   return (
     <State>
-    <AuthProvider>
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -40,7 +38,6 @@ const App = () => {
         <Route path="/*" element={<NoPage />} />
       </Routes>
     </Router>
-    </AuthProvider>
   </State>    )
 }
 

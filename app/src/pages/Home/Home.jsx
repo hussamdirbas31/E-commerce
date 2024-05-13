@@ -54,11 +54,13 @@ const Home = () => {
   return (
  <Layout >
       
- 
-  <HeroSection image={image1}/>
-<div className='p-[4%]'>
-<SliderImage Array={Array1}/>
-</div>
+ <div className='w-full '> 
+   <HeroSection image={image1}/>
+ </div>
+
+  <div className='p-[4%]'>
+  <SliderImage Array={Array1}/>
+  </div>
    
   <HeroSection image={image1}/>
   <div className='p-[5%]'>

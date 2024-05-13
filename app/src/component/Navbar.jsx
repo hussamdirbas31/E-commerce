@@ -8,22 +8,18 @@ import { useState } from 'react';
 import Context from '../context/Context'
 import { BsFillCloudSunFill } from 'react-icons/bs'
 import { FiSun } from 'react-icons/fi'
-import AuthContext from '../context/AuthContext';
+import {AuthContext} from '../context/AuthContext'
+import { auth } from '../firebase/FirebaseConfig';
 const Navbar = () => {
   const [nav , setNav] = useState(false)
-  
-  const authCtx = useContext(AuthContext)
-
   const context = useContext(Context)
-  const isLoggedIn = authCtx.isLoggedIn
-  
-
   const {mode,toggleMode} = context
-  
-  const logoutHandler = () =>{
-  authCtx.logout()
-  }  
-  
+  const {user}= useContext(AuthContext)
+ const handleLogout = () => {
+  auth.signOut()
+ }
+
+
   const handleClick = ()=>{
     setNav(!nav)
   }
@@ -34,6 +30,8 @@ const Navbar = () => {
   ]
 
   
+
+
 
 
   return (
@@ -61,14 +59,20 @@ const Navbar = () => {
           </Link>
     <ul style={{ backgroundColor: mode === 'dark' ? '#4A4A4A' : '', color: mode === 'dark' ? 'white' : '', }}
      className=' flex flex-row relative left-[20%] text-lg space-x-4 '>
-    {!isLoggedIn && 
-    <Link to='/login' 
-    className='  '>
-      Login</Link>
-}
-    {isLoggedIn && <Link to='/profile' className=' '>Profile</Link>
+    {
+      user? (
+        <>
+        <Link to='/profile'>{user.email}</Link>
+        <button onClick={handleLogout}>Logout</button>
+        </>
+      ):(<>
+      <Link to='/login'>Login</Link>
+      <Link to='/signup'>Sign Uo</Link>
+      </>
+      )
     }
-    {isLoggedIn&& <button className=' ' onClick={logoutHandler}>Logout</button>}
+
+
     </ul>
 
        </div>

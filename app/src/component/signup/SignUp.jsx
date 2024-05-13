@@ -1,51 +1,29 @@
-import { React,useRef,useState,useContext} from "react";
-import { Link, useNavigate } from 'react-router-dom'
+import { React, useContext, useState} from "react";
 import image from '../../assest/image2.jpeg'
 import Layout from '../../component/layout/Layout'
-
+import { Link, useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, fireDB } from '../../firebase/FirebaseConfig';
 
 function Signup() {
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const [isLoading, setIsloading]= useState(false)
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-   setIsloading(true)
-    try {
-      const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCu4Vie0NPdD0QgRTtXH5mmQHAvBlsxf0s', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          returnSecureToken: true
-        })
-      });
-
-      setIsloading(false)
-      if (response.ok) {
-        const data = await response.json();
-      
-        console.log(data)
-       return data
-      
-      } else {
-        console.error('Signup failed:', data.error);
-        const errordata = 'Auth is faild'
-        throw new Error(errordata)
-      }
-
-    } catch (error) {
-      alert(error.messsage)
-    }
-  };
-
-
-
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const navigate = useNavigate();
+const [loading,setLoading]=useState("")
+const [error,setError]= useState("")
+const handleSubmit = async(e)=>{
+  e.preventDefault()
+  await createUserWithEmailAndPassword(auth,email,password)
+  .then((userCredential)=>{
+    const user= userCredential.user
+    console.log(user)
+  })
+  .catch((error)=>{
+    const errorCode= error.codd
+    const errorMessage = error.message
+    console.log(errorCode,errorMessage)
+  })
+}
 
 return (
   <Layout>
@@ -60,7 +38,7 @@ return (
           <span className="font-light text-gray-400 mb-8">
             Welcom back! Please enter your details
           </span>
-          <form action=""  onSubmit={handleSubmit}> 
+          <form action=""   > 
           <div className="py-4">
             <span className="mb-2 text-md">Email</span>
             <input
@@ -69,21 +47,23 @@ return (
               className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
               name="email"
               id="email"
-              ref={emailRef}
-
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+                        
             />
           </div>
           <div className="py-4">
             <span className="mb-2 text-md">Password</span>
             <input
               type="password"
-              name="pass"
+              name="password"
               id="pass"
               className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               
-              ref={passwordRef}
-              />
-            
+ 
+ />
           </div>
 
           <div className="flex justify-between w-full py-4 px-2">
@@ -93,18 +73,19 @@ return (
             </div>
             
           </div>
-         {!isLoading&& <button
+         {!loading&&
+         <button
             className="w-full
              bg-black text-white p-2
              rounded-lg mb-6
               hover:bg-white
                hover:text-black 
                hover:border-gray-300"
+               onClick={handleSubmit}
          >
             Signup
-          </button>
-          }
-         {isLoading &&  <button
+          </button>}
+         {loading &&  <button
             className="w-full
              bg-black text-white p-2
              rounded-lg mb-6
@@ -115,10 +96,13 @@ return (
             Loading
           </button>}  
           
-          
           <button
 
-            className="w-full border border-gray-300 text-md p-2 rounded-lg mb-6 hover:bg-black hover:text-white"
+            className="w-full border
+             border-gray-300 text-md
+              p-2 rounded-lg mb-6
+               hover:bg-black
+             hover:text-white"
           >
             <img src={image} alt="img" className="w-6 h-6 inline mr-2" />
             Sign in with Google
@@ -152,3 +136,59 @@ return (
 }
 
 export default Signup
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const handleSubmit = async()=>{
+//   setLoading(true)
+//   if ( email === "" || password === "") {
+//     return setError("All fields are required")
+// }
+
+// try {
+//     const users = await createUserWithEmailAndPassword(auth, email, password);
+
+//     console.log(users)
+
+//     const user = {
+//         name: name,
+//         uid: users.user.uid,
+//         email: users.user.email,
+//         time : Timestamp.now()
+//     }
+//     const userRef = collection(fireDB, "users")
+//     await addDoc(userRef, user);
+//     setEmail("");
+//     setPassword("");
+//     setLoading(false)
+    
+// } catch (error) {
+//     console.log(error)
+//     setLoading(false)
+// }
+// }

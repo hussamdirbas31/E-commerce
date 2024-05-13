@@ -1,25 +1,28 @@
 import React,{useContext} from 'react'
 import Context from '../../context/Context'
 import Card1 from '../Card1/Card1'
-import image from '../../assest/image2.jpeg'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToCart } from '../../redux/cartSlice'
 const ProductCard = () => {
 const context = useContext(Context)
-const {mode} = context
-const array = [
-{id:1,name:"cloth", image: image},
-{id:2,name:"cloth", image: image},
-{id:3,name:"cloth", image: image},
-{id:4,name:"cloth", image: image},
-{id:5,name:"cloth", image: image},
-]
+const {mode,product} = context
+const dispatch = useDispatch()
+const cartItems = useSelector((state)=> state.cart)
 
   return (
-    <section className="  bg-red-600 flex flex-row ">
-   {array.map((item)=>{
-    return <Card1 key={item.id} name={item.name} image={item.image}/>
+    <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+    {product.slice(0,4).map((item,index)=>{
+    const{title,price , description,imageUrl,id}= item
+    return(
+      <Card1  key={index} title={title.slice(0,16)}
+       price={price}
+       description={description.slice(0,48)}
+       image={imageUrl}
+       productId={id}
+       />
+    )
    })}
-</section >
-
+  </section>
     )
 }
 

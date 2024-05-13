@@ -10,6 +10,7 @@ import { BsFillCloudSunFill } from 'react-icons/bs'
 import { FiSun } from 'react-icons/fi'
 import {AuthContext} from '../context/AuthContext'
 import { auth } from '../firebase/FirebaseConfig';
+import { useSelector } from 'react-redux';
 const Navbar = () => {
   const [nav , setNav] = useState(false)
   const context = useContext(Context)
@@ -29,7 +30,7 @@ const Navbar = () => {
     {id:"2",path:"stories",title:"Stories"},
   ]
 
-  
+   const cartItems = useSelector((state)=> state.cart)  
 
 
 
@@ -47,7 +48,7 @@ const Navbar = () => {
       <Search  mode1={{ backgroundColor: mode === 'dark' ? '#4A4A4A' : '', color: mode === 'dark' ? 'white' : '', }}/>
       <button className='' onClick={toggleMode}>
                     {mode === 'light' ?
-                      (<FiSun className='' size={30} />
+                      (<FiSun  size={30} />
                       ) : 'dark' ?
                         (<BsFillCloudSunFill size={30} />
                         ) : ''}
@@ -57,6 +58,7 @@ const Navbar = () => {
           left-4 top-[6%]'/>
           
           </Link>
+          <span className=' relative left-4 bottom-3 bg-red-600'>{cartItems.length}</span>
     <ul style={{ backgroundColor: mode === 'dark' ? '#4A4A4A' : '', color: mode === 'dark' ? 'white' : '', }}
      className=' flex flex-row relative left-[20%] text-lg space-x-4 '>
     {
@@ -66,8 +68,9 @@ const Navbar = () => {
         <button onClick={handleLogout}>Logout</button>
         </>
       ):(<>
-      <Link to='/login'>Login</Link>
-      <Link to='/signup'>Sign Uo</Link>
+      <Link to='/signup' className='flex flex-row h-8 text-white items-center bg-black/40 p-2 rounded relative left-5 top-1'>Signup</Link>
+      
+      <Link to='/login' className='flex h-8 items-center bg-black text-white p-2 rounded relative top-1'>Login</Link>
       </>
       )
     }

@@ -1,5 +1,3 @@
-// rgb(46,46,46)
-
 import React, { useEffect, useState } from 'react'
 import Context from './Context';
 import { fireDB } from '../firebase/FirebaseConfig';

@@ -11,7 +11,7 @@ export default function SliderImage({ Array }) {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
           slidesToScroll: 2,
         }
       },
@@ -25,27 +25,31 @@ export default function SliderImage({ Array }) {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1,
         }
       }
     ]
   };
   return (
-    <div className="w-full px-2 gap-5">
+    
+      
       <Slider {...settings}>
         {Array.map((item) => {
           return (
-            <div className="" key={item.id}>
-              <div className="ml-8">
-                <img src={item.Image} alt="" />
-                <h2 className="flex flex-row justify-center">{item.name}</h2>
-              </div>
+            <div className="p-6 w-full overflow-hidden" key={item.id}>
+              <div className=" grid grid-cols-1">
+                <div className="flex justify-center">
+                <img src={item.Image} className=" flex lg:max-h-[14rem] sm:max-h-[9rem]" alt="" />
+                </div>
+                
+                <h2 className=" flex justify-center ">{item.name}</h2>
+                </div>
             </div>
           );
         })}
       </Slider>
-    </div>
+
   );
 }
 

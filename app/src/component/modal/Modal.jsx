@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Modal = () => {
+const Modal = ({ name, address, pincode, phoneNumber, setName, setAddress, setPincode, setPhoneNumber, buyNow }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -22,42 +22,43 @@ const Modal = () => {
               </button>
             </div>
             <div className="p-6">
-              <form className="bg-gray-200 shadow-md rounded px-8 pt-6 pb-8 w-full">
-                <label htmlFor="firstName" className="block text-black text-sm font-bold mb-1">
-                  First Name
-                </label>
-                <input id="firstName" className="shadow appearance-none border rounded w-full py-2 px-1 text-black" />
-                <label htmlFor="lastName" className="block text-black text-sm font-bold mb-1">
-                  Last Name
-                </label>
-                <input id="lastName" className="shadow appearance-none border rounded w-full py-2 px-1 text-black" />
-                <label htmlFor="address" className="block text-black text-sm font-bold mb-1">
-                  Address
-                </label>
-                <input id="address" className="shadow appearance-none border rounded w-full py-2 px-1 text-black" />
-                <label htmlFor="city" className="block text-black text-sm font-bold mb-1">
-                  City
-                </label>
-                <input id="city" className="shadow appearance-none border rounded w-full py-2 px-1 text-black" />
-              </form>
-            </div>
-            <div className="flex items-center justify-end p-6 border-t border-gray-300 rounded-b">
-              <button
-                className="text-red-500 font-bold uppercase px-6 py-2 text-sm"
-                onClick={() => setShowModal(false)}
-              >
-                Close
-              </button>
-              <button
-                className="text-white bg-black  font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg"
-                onClick={() => setShowModal(false)}
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
+            <form className="space-y-4 md:space-y-6" action="#">
+          <div>
+      <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900">Enter Full Name</label>
+<input value={name} onChange={(e)=>setName(e.target.value)} type="name" name="name" id="name" className=" border outline-0 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100" required />
+</div>
+<div>
+<label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Enter Full Address</label>
+<input value={address} onChange={(e)=>setAddress(e.target.value)} type="text" name="address" id="address" className=" border outline-0 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100" required />
+</div>
+<div>
+<label htmlFor="pincode" className="block mb-2 text-sm font-medium text-gray-900">Enter Pincode</label>
+<input value={pincode} onChange={(e)=>setPincode(e.target.value)} type="text" name="pincode" id="pincode" className=" border outline-0 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100" required />
+</div>
+<div>
+<label htmlFor="mobileNumber" className="block mb-2 text-sm font-medium text-gray-900">Enter Mobile Number</label>
+<input value={phoneNumber} onChange={(e)=>setPhoneNumber(e.target.value)} type="text" name="mobileNumber" id="mobileNumber" className=" border outline-0 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100" required />
+</div>
+</form>
+<button onClick={()=>{buyNow(); closeModal()}} type="button" className="focus:outline-none w-full text-white bg-violet-600 hover:bg-violet-800  outline-0 font-medium rounded-lg text-sm px-5 py-2.5 ">Order Now</button>
+</div>
+<div className="flex items-center justify-end p-6 border-t border-gray-300 rounded-b">
+<button
+className="text-red-500 font-bold uppercase px-6 py-2 text-sm"
+onClick={() => setShowModal(false)}
+>
+Close
+</button>
+<button
+className="text-white bg-black  font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg"
+onClick={() => setShowModal(false)}
+>
+Submit
+</button>
+</div>
+</div>
+</div>
+) : null}
     </>
   );
 };

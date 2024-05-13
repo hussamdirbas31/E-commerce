@@ -7,9 +7,8 @@ const ProductCard = () => {
 const context = useContext(Context)
 const {mode,product} = context
 const dispatch = useDispatch()
-const cartItems = useSelector((state)=> state.cart)
 
-  return (
+return (
     <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4">
     {product.slice(0,4).map((item,index)=>{
     const{title,price , description,imageUrl,id}= item
@@ -19,6 +18,7 @@ const cartItems = useSelector((state)=> state.cart)
        description={description.slice(0,48)}
        image={imageUrl}
        productId={id}
+       item={item}
        />
     )
    })}

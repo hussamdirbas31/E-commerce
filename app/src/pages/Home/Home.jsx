@@ -58,10 +58,9 @@ const Home = () => {
    <HeroSection image={image1}/>
  </div>
 
-  <div className='p-[4%]'>
+  <div className='p-6 overflow-hidden'>
   <SliderImage Array={Array1}/>
   </div>
-   
   <HeroSection image={image1}/>
   <div className='p-[5%]'>
    <ProductCard/>   

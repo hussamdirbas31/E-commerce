@@ -14,6 +14,7 @@
     "axios": "^1.6.8",
     "cookie-universal": "^2.2.2",
     "firebase": "^10.10.0",
+    "framer-motion": "^11.2.2",
     "js-cookie": "^3.0.5",
     "react": "^18.2.0",
     "react-cookie": "^7.1.4",

@@ -13,6 +13,7 @@ import Login from './component/login/Login'
 import NoPage from './pages/noPage/NoPage';
 import Cookie from 'cookie-universal'
 import {AuthProvider}  from './context/AuthContext';
+import Clothing from './pages/clothing/Clothing';
 
 const App = () => {
 
@@ -23,6 +24,7 @@ const App = () => {
       
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/clothing" element={<Clothing />} />
 
         <Route path="/order" element={
             <Order />

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import ReactPlayer from 'react-player';
 import myContext from '../../context/Context';
 
-const VideoComponent = ({ title, videoUrl }) => {
+const VideoComponent = ({ title, desktopVideoUrl, mobileVideoUrl }) => {
   const context = useContext(myContext);
   const { mode } = context;
 
@@ -21,6 +21,9 @@ const VideoComponent = ({ title, videoUrl }) => {
   };
 
   const currentStyle = mode === 'dark' ? styles.dark : styles.light;
+
+  // Check if device is mobile
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   return (
     <section className="relative w-full h-screen min-h-[500px] overflow-hidden">
@@ -51,7 +54,7 @@ const VideoComponent = ({ title, videoUrl }) => {
       
       {/* Optimized video player */}
       <ReactPlayer
-        url={videoUrl}
+        url={isMobile ? mobileVideoUrl : desktopVideoUrl}
         playing
         muted
         loop

@@ -88,9 +88,10 @@ const Home = () => {
 
       {/* Video Component */}
       <VideoComponent 
-        title="New Collections" 
-        videoUrl="https://videos.pexels.com/video-files/3917524/3917524-uhd_2732_1440_25fps.mp4"
-      />
+  title="New Collections" 
+  desktopVideoUrl="https://videos.pexels.com/video-files/3917524/3917524-uhd_2732_1440_25fps.mp4"
+  mobileVideoUrl="https://videos.pexels.com/video-files/3894725/3894725-uhd_1440_2732_25fps.mp4"
+/>
 
       {/* New Arrivals */}
       <section 

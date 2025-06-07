@@ -32,8 +32,7 @@ const Navbar = () => {
 
   const navLinks = [
     { id: "1", path: "clothing", title: "Clothing" },
-    { id: "2", path: "stories", title: "Stories" },
-    { id: "3", path: "collections", title: "Collections" },
+   
   ];
 
   const handleLogout = () => auth.signOut();

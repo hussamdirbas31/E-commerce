@@ -6,19 +6,32 @@ import { Timestamp, deleteDoc,doc ,addDoc, collection, onSnapshot, orderBy, quer
 
 
 function State(props) {
-  const [mode, setMode] = useState('light');  
+  const [mode, setMode] = useState(() => {
+    const savedMode = localStorage.getItem('themeMode');
+    return savedMode ? savedMode : 'light';
+  });  
+
   const [loading, setLoading] = useState(false); 
 
+  // Apply mode changes to localStorage and UI
   const toggleMode = () => {
-    if (mode === 'light') {
-      setMode('dark');
-      document.body.style.backgroundColor = 'rgb(46,46,46)';
-    }
-    else {
-      setMode('light');
-      document.body.style.backgroundColor = 'white';
-    }
+    const newMode = mode === 'light' ? 'dark' : 'light';
+    setMode(newMode);
+    
+    // Save to localStorage
+    localStorage.setItem('themeMode', newMode);
+    
+    // Apply to body
+    document.body.style.backgroundColor = newMode === 'dark' ? 'rgb(46,46,46)' : 'white';
   }
+
+  // Initialize body background on first load
+  useEffect(() => {
+    const savedMode = localStorage.getItem('themeMode');
+    if (savedMode) {
+      document.body.style.backgroundColor = savedMode === 'dark' ? 'rgb(46,46,46)' : 'white';
+    }
+  }, []);
 ////////////////////////////////////////////////////////////////////////////
 const [products, setProducts] = useState({
   title: '',

@@ -1,194 +1,285 @@
-import { React, useContext, useState} from "react";
-import image from '../../assest/image2.jpeg'
-import Layout from '../../component/layout/Layout'
+import { React, useContext, useState } from "react";
+import image from '../../assest/image2.jpeg';
+import Layout from '../../component/layout/Layout';
 import { Link, useNavigate } from "react-router-dom";
+import { FiMail, FiLock } from "react-icons/fi";
+import { FcGoogle } from "react-icons/fc";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, fireDB } from '../../firebase/FirebaseConfig';
+import { auth } from '../../firebase/FirebaseConfig';
+import { toast } from 'react-toastify';
+import Context from '../../context/Context';
 
 function Signup() {
-const [email, setEmail] = useState("");
-const [password, setPassword] = useState("");
-const navigate = useNavigate();
-const [loading,setLoading]=useState("")
-const [error,setError]= useState("")
-const handleSubmit = async(e)=>{
-  e.preventDefault()
-  await createUserWithEmailAndPassword(auth,email,password)
-  .then((userCredential)=>{
-    const user= userCredential.user
-    console.log(user)
-  })
-  .catch((error)=>{
-    const errorCode= error.codd
-    const errorMessage = error.message
-    console.log(errorCode,errorMessage)
-  })
-}
+  const context = useContext(Context);
+  const { mode } = context;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-return (
-  <Layout>
-<div>
-<div className="flex items-center justify-center h-screen bg-gray-100">
-      <div
-        className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0"
+  // Color scheme with dark mode support
+  const colors = {
+    primary: '#800020', // Maroon
+    primaryHover: '#5c0018',
+    background: mode === 'dark' ? '#0f0f0f' : '#ffffff',
+    cardBg: mode === 'dark' ? 'rgb(32 33 34)' : '#ffffff',
+    text: mode === 'dark' ? '#f5f5f5' : '#1a1a1a',
+    textSecondary: mode === 'dark' ? '#d1d1d1' : '#4a4a4a',
+    border: mode === 'dark' ? '#2a2a2a' : '#e8e8e8',
+    inputBg: mode === 'dark' ? '#1a1a1a' : '#ffffff',
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    if (!email || !password) {
+      toast.error("All fields are required", { position: "top-right" });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      toast.success("Account created successfully!", { position: "top-right" });
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message, { position: "top-right" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Layout>
+      <div 
+        className="min-h-screen flex" 
+        style={{ backgroundColor: colors.background }}
       >
-        {/* <!-- left side --> */}
-        <div className="flex flex-col justify-center p-8 md:p-14">
-          <span className="mb-3 text-4xl font-bold">Welcome back</span>
-          <span className="font-light text-gray-400 mb-8">
-            Welcom back! Please enter your details
-          </span>
-          <form action=""   > 
-          <div className="py-4">
-            <span className="mb-2 text-md">Email</span>
-            <input
-           
-              type="text"
-              className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-              name="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-                        
-            />
-          </div>
-          <div className="py-4">
-            <span className="mb-2 text-md">Password</span>
-            <input
-              type="password"
-              name="password"
-              id="pass"
-              className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              
- 
- />
-          </div>
-
-          <div className="flex justify-between w-full py-4 px-2">
-            <div className=" mr-24">
-              <input type="checkbox" name="ch" id="ch" className="mr-2" />
-              <span className="text-md">Remember for 30 days</span>
-            </div>
-            
-          </div>
-         {!loading&&
-         <button
-            className="w-full
-             bg-black text-white p-2
-             rounded-lg mb-6
-              hover:bg-white
-               hover:text-black 
-               hover:border-gray-300"
-               onClick={handleSubmit}
-         >
-            Signup
-          </button>}
-         {loading &&  <button
-            className="w-full
-             bg-black text-white p-2
-             rounded-lg mb-6
-              hover:bg-white
-               hover:text-black 
-               hover:border-gray-300"
-         >
-            Loading
-          </button>}  
-          
-          <button
-
-            className="w-full border
-             border-gray-300 text-md
-              p-2 rounded-lg mb-6
-               hover:bg-black
-             hover:text-white"
+        {/* Left Side - Form */}
+        <div 
+          className="w-full md:w-1/2 flex items-center justify-center p-8"
+          style={{ backgroundColor: colors.background }}
+        >
+          <div 
+            className="w-full max-w-md p-8 rounded-xl"
+            style={{ 
+              backgroundColor: colors.cardBg,
+              border: `1px solid ${colors.border}`,
+              boxShadow: mode === 'dark' 
+                ? '0 4px 6px rgba(0, 0, 0, 0.3)' 
+                : '0 4px 6px rgba(0, 0, 0, 0.1)'
+            }}
           >
-            <img src={image} alt="img" className="w-6 h-6 inline mr-2" />
-            Sign in with Google
-          </button>
-          </form>
-          <div className="text-center text-gray-400">
-                already have an account?
-          <Link to='/login'><button><span className="font-bold text-black">Login</span></button></Link>
+            <div className="text-center mb-8">
+              <h2 
+                className="text-3xl font-bold"
+                style={{ color: colors.primary }}
+              >
+                Create your account
+              </h2>
+              <p style={{ color: colors.textSecondary }}>
+                Join Artizia to discover the latest fashion trends
+              </p>
+            </div>
+
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <div>
+                <label 
+                  htmlFor="email" 
+                  className="block text-sm font-medium mb-1"
+                  style={{ color: colors.text }}
+                >
+                  Email Address
+                </label>
+                <div className="relative rounded-md shadow-sm">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiMail className="h-5 w-5" style={{ color: colors.textSecondary }} />
+                  </div>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="py-3 pl-10 block w-full rounded-md focus:ring-2 focus:ring-offset-2"
+                    placeholder="your@email.com"
+                    style={{ 
+                      backgroundColor: colors.inputBg,
+                      borderColor: colors.border,
+                      color: colors.text,
+                      focusRing: colors.primary
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label 
+                  htmlFor="password" 
+                  className="block text-sm font-medium mb-1"
+                  style={{ color: colors.text }}
+                >
+                  Password
+                </label>
+                <div className="relative rounded-md shadow-sm">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiLock className="h-5 w-5" style={{ color: colors.textSecondary }} />
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="new-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="py-3 pl-10 block w-full rounded-md focus:ring-2 focus:ring-offset-2"
+                    placeholder="••••••••"
+                    style={{ 
+                      backgroundColor: colors.inputBg,
+                      borderColor: colors.border,
+                      color: colors.text,
+                      focusRing: colors.primary
+                    }}
+                  />
+                </div>
+                <p className="mt-2 text-sm" style={{ color: colors.textSecondary }}>
+                  Use 8 or more characters with a mix of letters, numbers & symbols
+                </p>
+              </div>
+
+              <div className="flex items-center">
+                <input
+                  id="terms"
+                  name="terms"
+                  type="checkbox"
+                  required
+                  className="h-4 w-4 rounded focus:ring-2 focus:ring-offset-2"
+                  style={{ 
+                    backgroundColor: colors.inputBg,
+                    borderColor: colors.border,
+                    focusRing: colors.primary
+                  }}
+                />
+                <label 
+                  htmlFor="terms" 
+                  className="ml-2 block text-sm"
+                  style={{ color: colors.text }}
+                >
+                  I agree to the <a href="#" style={{ color: colors.primary }}>Terms</a> and <a href="#" style={{ color: colors.primary }}>Privacy Policy</a>
+                </label>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200"
+                  style={{ 
+                    backgroundColor: loading ? colors.primaryHover : colors.primary,
+                    focusRing: colors.primary
+                  }}
+                >
+                  {loading ? (
+                    <span className="flex items-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Creating account...
+                    </span>
+                  ) : 'Sign up'}
+                </button>
+              </div>
+            </form>
+
+            <div className="mt-6">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t" style={{ borderColor: colors.border }}></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span 
+                    className="px-2"
+                    style={{ 
+                      backgroundColor: colors.cardBg,
+                      color: colors.textSecondary
+                    }}
+                  >
+                    Or sign up with
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <button
+                  type="button"
+                  className="w-full flex justify-center items-center py-2 px-4 border rounded-md shadow-sm text-sm font-medium focus:outline-none transition-colors duration-200"
+                  style={{ 
+                    borderColor: colors.border,
+                    backgroundColor: colors.cardBg,
+                    color: colors.text
+                  }}
+                >
+                  <FcGoogle className="h-5 w-5 mr-2" />
+                  Sign up with Google
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-6 text-center text-sm">
+              <p style={{ color: colors.textSecondary }}>
+                Already have an account?{' '}
+                <Link 
+                  to="/login" 
+                  className="font-medium"
+                  style={{ color: colors.primary }}
+                >
+                  Log in
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
-        <div className="relative">
+
+        {/* Right Side - Image */}
+        <div 
+          className="hidden md:block md:w-1/2 relative"
+          style={{ backgroundColor: mode === 'dark' ? '#1a1a1a' : '#f5f5f5' }}
+        >
           <img
             src={image}
-            alt="img"
-            className="w-[400px] h-full hidden rounded-r-2xl md:block object-cover"
+            alt="Decorative"
+            className="w-full h-full object-cover opacity-90"
           />
-          <div
-            className="absolute hidden bottom-10 right-6 p-6 bg-white bg-opacity-30 backdrop-blur-sm rounded drop-shadow-lg md:block"
+          <div 
+            className="absolute bottom-8 left-8 right-8 p-6 rounded-lg shadow-sm"
+            style={{ 
+              backgroundColor: mode === 'dark' ? 'rgba(15, 15, 15, 0.8)' : 'rgba(255, 255, 255, 0.9)',
+              border: `1px solid ${colors.border}`
+            }}
           >
-            <span className="text-white text-xl"
-              >We've been uesing Untitle to kick"<br />start every new project
-              and can't <br />imagine working without it."
-            </span>
+            <p 
+              className="text-lg"
+              style={{ color: colors.text }}
+            >
+              "Discover the latest fashion trends with Artizia's exclusive collections."
+            </p>
+            <p 
+              className="mt-2 text-sm font-medium"
+              style={{ color: colors.primary }}
+            >
+              — Artizia Team
+            </p>
           </div>
         </div>
       </div>
-    </div>
-    </div>
     </Layout>
-)
+  );
 }
 
-export default Signup
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const handleSubmit = async()=>{
-//   setLoading(true)
-//   if ( email === "" || password === "") {
-//     return setError("All fields are required")
-// }
-
-// try {
-//     const users = await createUserWithEmailAndPassword(auth, email, password);
-
-//     console.log(users)
-
-//     const user = {
-//         name: name,
-//         uid: users.user.uid,
-//         email: users.user.email,
-//         time : Timestamp.now()
-//     }
-//     const userRef = collection(fireDB, "users")
-//     await addDoc(userRef, user);
-//     setEmail("");
-//     setPassword("");
-//     setLoading(false)
-    
-// } catch (error) {
-//     console.log(error)
-//     setLoading(false)
-// }
-// }
+export default Signup;

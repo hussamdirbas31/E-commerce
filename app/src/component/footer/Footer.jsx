@@ -1,98 +1,175 @@
-import { useContext } from 'react'
-import { Link } from 'react-router-dom'
-import myContext from '../../context/Context'
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import myContext from '../../context/Context';
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 export default function Footer() {
-    const context = useContext(myContext)
-    const { toggleMode, mode } = context
-    return (
-        <footer className="text-gray-600 body-font " style={{ backgroundColor: mode === 'dark' ? 'rgb(46,46,46)' : '', color: mode === 'dark' ? 'white' : '', }}>
-            <div className="container px-5 py-24 mx-auto" >
-                <div className="flex flex-wrap md:text-left text-center order-first">
-                    <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-                        <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3" style={{ color: mode === 'dark' ? 'white' : '' }}>CATEGORIES</h2>
-                        <nav className="list-none mb-10">
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800" style={{ color: mode === 'dark' ? 'white' : '' }}>Home</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800" style={{ color: mode === 'dark' ? 'white' : '' }}>Order</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800" style={{ color: mode === 'dark' ? 'white' : '' }}>Local For Vocal</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800" style={{ color: mode === 'dark' ? 'white' : '' }}>Cart</a>
-                            </li>
-                        </nav>
-                    </div>
-                    <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-                        <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3 uppercase" style={{ color: mode === 'dark' ? 'white' : '' }}>Customer Service</h2>
-                        <nav className="list-none mb-10">
-                            <li>
-                                <Link to={'/returnpolicy'} className="text-gray-600 hover:text-gray-800" style={{ color: mode === 'dark' ? 'white' : '' }}>Return Policy</Link>
-                            </li>
-                            <li>
-                                <Link to={'/about'} className="text-gray-600 hover:text-gray-800" style={{ color: mode === 'dark' ? 'white' : '' }}>About</Link>
-                            </li>
-                            <li>
-                                <Link to={'/contact'} className="text-gray-600 hover:text-gray-800" style={{ color: mode === 'dark' ? 'white' : '' }}>Contact Us</Link>
-                            </li>
-                        </nav>
-                    </div>
+  const context = useContext(myContext);
+  const { mode } = context;
 
-                    <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-                        <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3" style={{ color: mode === 'dark' ? 'white' : '' }}>Services</h2>
-                        <nav className="list-none mb-10">
-                            <li>
-                                <Link to={'/privacypolicy'} className="text-gray-600 hover:text-gray-800" style={{ color: mode === 'dark' ? 'white' : '' }}>Privacy</Link>
-                            </li>
+  // Enhanced maroon color palette matching the Navbar
+  const colors = {
+    primary: '#800020',
+    primaryHover: '#5c0018',
+    secondary: '#d4a59a',
+    secondaryHover: '#c08e80',
+    background: mode === 'light' ? '#ffffff' : '#0f0f0f',
+    text: mode === 'light' ? '#1a1a1a' : '#f5f5f5',
+    textSecondary: mode === 'light' ? '#4a4a4a' : '#d1d1d1',
+    border: mode === 'light' ? '#e8e8e8' : '#2a2a2a',
+    glass: mode === 'light' ? 'rgba(255, 255, 255, 0.95)' : 'rgba(15, 15, 15, 0.95)',
+  };
 
-                        </nav>
-                    </div>
-                    <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-                        <img src="https://ecommerce-sk.vercel.app/pay.png" alt="" />
-                    </div>
-                </div>
+  const footerSections = [
+    {
+      title: 'CATEGORIES',
+      links: [
+        { name: 'Home', path: '/' },
+        { name: 'Order', path: '/orders' },
+        { name: 'Local For Vocal', path: '/local' },
+        { name: 'Cart', path: '/cart' }
+      ]
+    },
+    {
+      title: 'CUSTOMER SERVICE',
+      links: [
+        { name: 'Return Policy', path: '/returnpolicy' },
+        { name: 'About', path: '/about' },
+        { name: 'Contact Us', path: '/contact' }
+      ]
+    },
+    {
+      title: 'SERVICES',
+      links: [
+        { name: 'Privacy Policy', path: '/privacypolicy' },
+        { name: 'Terms of Service', path: '/terms' }
+      ]
+    }
+  ];
 
-            </div>
+  const socialLinks = [
+    { icon: <FaFacebook size={18} />, url: '#' },
+    { icon: <FaTwitter size={18} />, url: '#' },
+    { icon: <FaInstagram size={18} />, url: '#' },
+    { icon: <FaLinkedin size={18} />, url: '#' }
+  ];
 
-            <div className="bg-white" style={{ backgroundColor: mode === 'dark' ? 'rgb(46,46,46)' : '', color: mode === 'dark' ? 'white' : '', }}>
-                <div className="container px-5 py-3 mx-auto flex items-center sm:flex-row flex-col">
-                    <Link to={'/'} className='flex'>
-                        <div className="flex ">
-                            <h1 className=' text-2xl font-bold text-black  px-2 py-1 rounded' style={{ color: mode === 'dark' ? 'white' : '', }}>ARTIZIA</h1>
-                        </div>
+  return (
+    <footer 
+      className="w-full border-t"
+      style={{
+        backgroundColor: colors.background,
+        color: colors.text,
+        borderColor: colors.border
+      }}
+    >
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {footerSections.map((section, index) => (
+            <div key={index} className="space-y-4">
+              <h3 
+                className="font-medium uppercase tracking-wider text-sm"
+                style={{ color: colors.primary }}
+              >
+                {section.title}
+              </h3>
+              <nav className="space-y-2">
+                {section.links.map((link, idx) => (
+                  <div key={idx}>
+                    <Link
+                      to={link.path}
+                      className="text-sm transition-colors duration-200 block relative group"
+                      style={{ color: colors.textSecondary }}
+                    >
+                      <span className="relative">
+                        {link.name}
+                        <span 
+                          className="absolute bottom-0 left-0 w-0 h-px bg-current transition-all duration-300 group-hover:w-full"
+                          style={{ backgroundColor: colors.primary }}
+                        />
+                      </span>
                     </Link>
-                    <p className="text-sm text-gray-500 sm:ml-6 sm:mt-0 mt-4" style={{ color: mode === 'dark' ? 'white' : '' }}>© 2024 Artizia —
-                        <a href="" rel="noopener noreferrer" className="text-gray-600 ml-1" target="_blank" style={{ color: mode === 'dark' ? 'white' : '' }}>www.Artizia.com</a>
-                    </p>
-                    <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
-                        <a className="text-gray-500">
-                            <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-5 h-5" viewBox="0 0 24 24">
-                                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
-                            </svg>
-                        </a>
-                        <a className="ml-3 text-gray-500">
-                            <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-5 h-5" viewBox="0 0 24 24">
-                                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
-                            </svg>
-                        </a>
-                        <a className="ml-3 text-gray-500">
-                            <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-5 h-5" viewBox="0 0 24 24">
-                                <rect width={20} height={20} x={2} y={2} rx={5} ry={5} />
-                                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01" />
-                            </svg>
-                        </a>
-                        <a className="ml-3 text-gray-500">
-                            <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={0} className="w-5 h-5" viewBox="0 0 24 24">
-                                <path stroke="none" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
-                                <circle cx={4} cy={4} r={2} stroke="none" />
-                            </svg>
-                        </a>
-                    </span>
-                </div>
+                  </div>
+                ))}
+              </nav>
             </div>
-        </footer>
-    )
+          ))}
+
+          <div className="space-y-4">
+            <h3 
+              className="font-medium uppercase tracking-wider text-sm"
+              style={{ color: colors.primary }}
+            >
+              Payment Methods
+            </h3>
+            <div className="p-4 rounded-lg" style={{ backgroundColor: colors.glass }}>
+              <img 
+                src="https://ecommerce-sk.vercel.app/pay.png" 
+                alt="Accepted payment methods" 
+                className="w-full max-w-xs"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div 
+        className="border-t py-6"
+        style={{ 
+          borderColor: colors.border,
+          backgroundColor: colors.glass
+        }}
+      >
+        <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+          <div className="flex items-center mb-4 md:mb-0">
+            <Link to="/" className="flex items-center">
+              <span 
+                className="text-2xl font-bold px-2 py-1 rounded tracking-tight hover:tracking-wide transition-all duration-300"
+                style={{ color: colors.primary }}
+              >
+                Artizia
+              </span>
+            </Link>
+            <p 
+              className="text-sm ml-4"
+              style={{ color: colors.textSecondary }}
+            >
+              © {new Date().getFullYear()} Artizia —
+              <a 
+                href="https://www.artizia.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="ml-1 hover:underline"
+                style={{ color: colors.primary }}
+              >
+                www.Artizia.com
+              </a>
+            </p>
+          </div>
+
+          <div className="flex space-x-2">
+            {socialLinks.map((social, index) => (
+              <a
+                key={index}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-full hover:bg-opacity-10 transition-all duration-300"
+                style={{ 
+                  color: colors.primary,
+                  ':hover': { 
+                    backgroundColor: colors.primary,
+                    color: '#fff'
+                  }
+                }}
+                aria-label={`Follow us on ${social.icon.type.name.replace('Fa', '')}`}
+              >
+                {social.icon}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 }

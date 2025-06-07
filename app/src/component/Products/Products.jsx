@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const Products = () => {
 const context = useContext(Context)
-const {mode,product} = context
+const {product} = context
 const dispatch = useDispatch()
 
   return (

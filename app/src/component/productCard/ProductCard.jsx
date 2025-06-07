@@ -1,29 +1,28 @@
-import React,{useContext} from 'react'
-import Context from '../../context/Context'
-import Card1 from '../Card1/Card1'
-import { useDispatch, useSelector } from 'react-redux'
-import { addToCart } from '../../redux/cartSlice'
+import React, { useContext } from 'react';
+import Context from '../../context/Context';
+import Card1 from '../Card1/Card1';
+
 const ProductCard = () => {
-const context = useContext(Context)
-const {mode,product} = context
-const dispatch = useDispatch()
+  const { product, mode } = useContext(Context);
 
-return (
-    <section className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4">
-    {product.slice(0,4).map((item,index)=>{
-    const{title,price , description,imageUrl,id}= item
-    return(
-      <Card1  key={index} title={title.slice(0,16)}
-       price={price}
-       description={description.slice(0,48)}
-       image={imageUrl}
-       productId={id}
-       item={item}
-       />
-    )
-   })}
-  </section>
-    )
-}
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {product.slice(0, 4).map((item) => (
+          <Card1
+            key={item.id}
+            title={item.title}
+            price={item.price}
+            description={item.description}
+            image={item.imageUrl}
+            productId={item.id}
+            item={item}
+            mode={mode}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
-export default ProductCard
+export default ProductCard;

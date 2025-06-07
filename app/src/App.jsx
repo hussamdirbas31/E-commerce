@@ -34,13 +34,13 @@ const App = () => {
         <Route path="/dashboard" element={
           <Dashboard />
           } />
-        <Route path="/productinfo" element={<ProductInfo />} />
+<Route path="/product/:id" element={<ProductInfo />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/addproduct" element={
           <AddProduct />} />
           <Route path="/updateproduct" element={
-            <ProtectedRoutesForAdmin><UpdateProducts /></ProtectedRoutesForAdmin>} />
+          <UpdateProducts />} />
         
         <Route path="/*" element={<NoPage />} />
       </Routes>

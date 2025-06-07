@@ -1,157 +1,177 @@
-import React from 'react'
-import Layout from '../../pages/Layout/Layout'
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams } from 'react-router-dom';
+import Layout from '../../pages/Layout/Layout';
+import Context from '../../context/Context';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../../redux/cartSlice';
+import { toast } from 'react-toastify';
+import LoadingSpinner from '../../component/loader/Loader';
 
 function ProductInfo() {
+    const { id } = useParams();
+    const { mode, product } = useContext(Context);
+    const [productData, setProductData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const dispatch = useDispatch();
+    const cartItems = useSelector((state) => state.cart);
+
+    // Color scheme matching the design system
+    const colors = {
+        primary: '#800020',
+        primaryHover: '#5c0018',
+        background: mode === 'dark' ? '#0f0f0f' : '#ffffff',
+        text: mode === 'dark' ? '#f5f5f5' : '#1a1a1a',
+        textSecondary: mode === 'dark' ? '#d1d1d1' : '#4a4a4a',
+        border: mode === 'dark' ? '#2a2a2a' : '#e8e8e8',
+        cardBg: mode === 'dark' ? 'rgb(32 33 34)' : '#ffffff',
+    };
+
+    useEffect(() => {
+        if (product.length > 0) {
+            const foundProduct = product.find(item => item.id === id);
+            setProductData(foundProduct || null);
+            setLoading(false);
+        }
+    }, [id, product]);
+
+    const handleAddToCart = () => {
+        if (!productData) return;
+        
+        dispatch(addToCart({
+            title: productData.title,
+            price: productData.price,
+            description: productData.description,
+            image: productData.imageUrl,
+            productId: productData.id,
+            quantity: 1
+        }));
+        toast.success('Item added to cart!', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    };
+
+    if (loading) {
+        return (
+            <Layout>
+                <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.background }}>
+                    <LoadingSpinner />
+                </div>
+            </Layout>
+        );
+    }
+
+    if (!productData) {
+        return (
+            <Layout>
+                <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.background }}>
+                    <div className="text-center p-8 rounded-lg" style={{ backgroundColor: colors.cardBg }}>
+                        <h2 className="text-2xl font-bold mb-4" style={{ color: colors.text }}>Product Not Found</h2>
+                        <p style={{ color: colors.textSecondary }}>
+                            The product you're looking for doesn't exist or may have been removed.
+                        </p>
+                    </div>
+                </div>
+            </Layout>
+        );
+    }
+
+    const { title, price, description, imageUrl, category } = productData;
+
     return (
         <Layout>
-            <section className="text-gray-600 body-font overflow-hidden">
-                <div className="container px-5 py-32 mx-auto">
-                    <div className="lg:w-4/5 mx-auto flex flex-wrap">
-                        <img
-                            alt="ecommerce"
-                            className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
-                            src="https://dummyimage.com/400x400"
-                        />
-                        <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-                            <h2 className="text-sm title-font text-gray-500 tracking-widest">
-                                BRAND NAME
+            <div className="min-h-screen" style={{ backgroundColor: colors.background }}>
+                <div className="container mx-auto px-4 py-12 lg:py-24">
+                    <div className="flex flex-col lg:flex-row gap-12">
+                        {/* Product Image */}
+                        <div className="lg:w-1/2">
+                            <div className="rounded-xl overflow-hidden shadow-lg" style={{ backgroundColor: colors.cardBg, borderColor: colors.border }}>
+                                <img
+                                    alt={title}
+                                    className="w-full h-auto max-h-[500px] object-cover"
+                                    src={imageUrl || "https://via.placeholder.com/800x800"}
+                                    style={{ borderColor: colors.border }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Product Details */}
+                        <div className="lg:w-1/2" style={{ color: colors.text }}>
+                            <h2 className="text-sm font-medium mb-2" style={{ color: colors.primary }}>
+                                {category || 'CATEGORY'}
                             </h2>
-                            <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
-                                The Catcher in the Rye
+                            <h1 className="text-3xl lg:text-4xl font-bold mb-4">
+                                {title || 'Product Title'}
                             </h1>
-                            <div className="flex mb-4">
-                                <span className="flex items-center">
-                                    <svg
-                                        fill="currentColor"
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        className="w-4 h-4 text-indigo-500"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                    </svg>
-                                    <svg
-                                        fill="currentColor"
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        className="w-4 h-4 text-indigo-500"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                    </svg>
-                                    <svg
-                                        fill="currentColor"
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        className="w-4 h-4 text-black"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                    </svg>
-                                    <svg
-                                        fill="currentColor"
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        className="w-4 h-4 text-black"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                    </svg>
-                                    <svg
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        className="w-4 h-4 text-black"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                    </svg>
-                                    <span className="text-gray-600 ml-3">4 Reviews</span>
-                                </span>
-                                <span className="flex ml-3 pl-3 py-2 border-l-2 border-gray-200 space-x-2s">
-                                    <a className="text-gray-500">
+
+                            {/* Rating */}
+                            <div className="flex items-center mb-6">
+                                <div className="flex mr-2">
+                                    {[...Array(5)].map((_, i) => (
                                         <svg
-                                            fill="currentColor"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
+                                            key={i}
+                                            fill={i < 4 ? colors.primary : "none"}
+                                            stroke={colors.primary}
                                             strokeWidth={2}
                                             className="w-5 h-5"
                                             viewBox="0 0 24 24"
                                         >
-                                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                                         </svg>
-                                    </a>
-                                    <a className="text-gray-500">
-                                        <svg
-                                            fill="currentColor"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            className="w-5 h-5"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
-                                        </svg>
-                                    </a>
-                                    <a className="text-gray-500">
-                                        <svg
-                                            fill="currentColor"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            className="w-5 h-5"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
-                                        </svg>
-                                    </a>
+                                    ))}
+                                </div>
+                                <span style={{ color: colors.textSecondary }}>4 Reviews</span>
+                            </div>
+
+                            {/* Description */}
+                            <div className="mb-8 pb-8 border-b" style={{ borderColor: colors.border }}>
+                                <p className="leading-relaxed">
+                                    {description || 'Product description not available.'}
+                                </p>
+                            </div>
+
+                            {/* Price */}
+                            <div className="mb-8">
+                                <span className="text-3xl font-bold" style={{ color: colors.primary }}>
+                                    ${price || '0.00'}
                                 </span>
                             </div>
-                            <p className="leading-relaxed border-b-2 mb-5 pb-5">
-                                Fam locavore kickstarter distillery. Mixtape chillwave tumeric
-                                sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo juiceramps
-                                cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine
-                                tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean
-                                shorts keytar banjo tattooed umami cardigan.
-                            </p>
-                         
-                            <div className="flex">
-                                <span className="title-font font-medium text-2xl text-gray-900">
-                                    $58.00
-                                </span>
-                                <button className="flex ml-auto text-white bg-black border-0 py-2 px-6 focus:outline-none hover:bg-slate-200 hover:text-black rounded">
+
+                            {/* Action Buttons */}
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <button 
+                                    onClick={handleAddToCart}
+                                    className="flex-1 py-3 px-6 rounded-lg font-bold transition-colors duration-300"
+                                    style={{
+                                        backgroundColor: colors.primary,
+                                        color: '#ffffff',
+                                        ':hover': { backgroundColor: colors.primaryHover }
+                                    }}
+                                >
                                     Add To Cart
                                 </button>
-                                <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
-                                    <svg
-                                        fill="currentColor"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        className="w-5 h-5"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-                                    </svg>
+                                <button 
+                                    className="py-3 px-6 rounded-lg border font-medium transition-colors duration-300"
+                                    style={{
+                                        borderColor: colors.primary,
+                                        color: colors.primary,
+                                        ':hover': { backgroundColor: colors.primary, color: '#ffffff' }
+                                    }}
+                                >
+                                    Buy Now
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
-
+            </div>
         </Layout>
-    )
+    );
 }
 
-export default ProductInfo
+export default ProductInfo;

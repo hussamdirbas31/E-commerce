@@ -1,60 +1,66 @@
-import React,{useContext} from 'react'
-import {FaUserTie} from 'react-icons/fa'
-import Context from '../../context/Context'
-import Layout from '../Layout/Layout'
-import DashboardTab from '../../pages/Admin/DashboardTab'
-
+import React, { useContext } from 'react';
+import { FaUserTie, FaBoxes, FaShoppingCart, FaUsers } from 'react-icons/fa';
+import Context from '../../context/Context';
+import Layout from '../Layout/Layout';
+import DashboardTab from '../../pages/Admin/DashboardTab';
 
 const Dashboard = () => {
-  const context = useContext(Context)
-  const {mode} = context; 
+  const context = useContext(Context);
+  const { mode } = context; 
+
+  // Colors matching the design system
+  const colors = {
+    primary: '#800020',
+    primaryHover: '#5c0018',
+    background: mode === 'dark' ? '#0f0f0f' : '#ffffff',
+    cardBg: mode === 'dark' ? 'rgba(46, 49, 55, 0.8)' : 'rgba(255, 255, 255, 0.95)',
+    text: mode === 'dark' ? '#f5f5f5' : '#1a1a1a',
+    border: mode === 'dark' ? '#2a2a2a' : '#e8e8e8',
+  };
+
+  const stats = [
+    { title: 'Total Products', value: '10', icon: <FaBoxes size={40} /> },
+    { title: 'Total Orders', value: '10', icon: <FaShoppingCart size={40} /> },
+    { title: 'Total Users', value: '20', icon: <FaUsers size={40} /> },
+    { title: 'Revenue', value: '$5,000', icon: <FaUserTie size={40} /> }
+  ];
+
   return (
     <Layout>
-       <section className="text-gray-600 body-font mt-10 mb-10">
-            <div className="container px-5 mx-auto mb-10">
-                <div className="flex flex-wrap -m-4 text-center">
-                    <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
-                        <div className=" border-2 hover:shadow-red-600 shadow-[inset_0_0_5px_rgba(0,0,0,0)] bg-white border-gray-300    px-4 py-3" style={{ backgroundColor: mode === 'dark' ? 'rgb(46 49 55)' : '', color: mode === 'dark' ? 'white' : '', }} >
-                            <div style={{color:mode === 'dark'?'white':''}} className="text-black  w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
-                                <FaUserTie size={50} />
-                            </div>
-                            <h2 className="title-font font-medium text-3xl text-black fonts1" style={{ color: mode === 'dark' ? 'white' : ''}}>10</h2>
-                            <p className=" text-black  font-bold" style={{ color: mode === 'dark' ? 'white' : ''}}>Total Products</p>
-                        </div>
-                    </div>
-                    <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
-                        <div className=" border-2 hover:shadow-red-600 shadow-[inset_0_0_5px_rgba(0,0,0,0)] bg-white border-gray-300    px-4 py-3" style={{ backgroundColor: mode === 'dark' ? 'rgb(46 49 55)' : '', color: mode === 'dark' ? 'white' : '', }}>
-                            <div className="text-black w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
-                                <FaUserTie size={50} />
-                            </div>
-                            <h2 className="title-font font-medium text-3xl text-black fonts1" style={{ color: mode === 'dark' ? 'white' : ''}}>10</h2>
-                            <p className=" text-black  font-bold" style={{ color: mode === 'dark' ? 'white' : ''}}>Total Orders</p>
-                        </div>
-                    </div>
-                    <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
-                        <div className=" border-2 hover:shadow-red-600 shadow-[inset_0_0_5px_rgba(0,0,0,0)] bg-white border-gray-300    px-4 py-3" style={{ backgroundColor: mode === 'dark' ? 'rgb(46 49 55)' : '', color: mode === 'dark' ? 'white' : '', }} >
-                            <div className="text-black w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
-                                <FaUserTie size={50} />
-                            </div>
-                            <h2 className="title-font font-medium text-3xl text-black fonts1" style={{ color: mode === 'dark' ? 'white' : ''}}>20</h2>
-                            <p className=" text-black  font-bold" style={{ color: mode === 'dark' ? 'white' : ''}}>Total Users</p>
-                        </div>
-                    </div>
-                    <div className="p-4 md:w-1/4 sm:w-1/2 w-full">
-                        <div className=" border-2 hover:shadow-red-600 shadow-[inset_0_0_5px_rgba(0,0,0,0)] bg-white border-gray-300    px-4 py-3" style={{ backgroundColor: mode === 'dark' ? 'rgb(46 49 55)' : '', color: mode === 'dark' ? 'white' : '', }}>
-                            <div className="text-black w-12 h-12 mb-3 inline-block" viewBox="0 0 24 24">
-                                <FaUserTie size={50} />
-                            </div>
-                            <h2 className="title-font font-medium text-3xl text-black fonts1" style={{ color: mode === 'dark' ? 'white' : ''}}>20</h2>
-                            <p className=" text-black  font-bold" style={{ color: mode === 'dark' ? 'white' : ''}}>Total Products</p>
-                        </div>
-                    </div>
+      <section className="py-12 px-4" style={{ backgroundColor: colors.background }}>
+        <div className="max-w-7xl mx-auto">
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {stats.map((stat, index) => (
+              <div 
+                key={index}
+                className="p-6 rounded-xl border transition-all duration-300 hover:shadow-lg"
+                style={{
+                  backgroundColor: colors.cardBg,
+                  borderColor: colors.border,
+                  color: colors.text,
+                  boxShadow: mode === 'dark' ? '0 4px 6px rgba(0, 0, 0, 0.3)' : '0 4px 6px rgba(0, 0, 0, 0.1)'
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg font-medium">{stat.title}</p>
+                    <h3 className="text-3xl font-bold mt-2">{stat.value}</h3>
+                  </div>
+                  <div style={{ color: colors.primary }}>
+                    {stat.icon}
+                  </div>
                 </div>
-            </div>
-            <DashboardTab/>
-        </section>
-    </Layout>
-  )
-}
+              </div>
+            ))}
+          </div>
 
-export default Dashboard
+          {/* Dashboard Tabs */}
+          <DashboardTab />
+        </div>
+      </section>
+    </Layout>
+  );
+};
+
+export default Dashboard;

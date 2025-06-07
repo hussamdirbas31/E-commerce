@@ -1,88 +1,171 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-const Modal = ({ name, address, pincode, phoneNumber, setName, setAddress, setPincode, setPhoneNumber, buyNow }) => {
+const Modal = ({ customerInfo, setCustomerInfo, buyNow, colors }) => {
   const [showModal, setShowModal] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCustomerInfo(prev => ({ ...prev, [name]: value }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!customerInfo.name.trim()) newErrors.name = 'Name is required';
+    if (!customerInfo.address.trim()) newErrors.address = 'Address is required';
+    if (!customerInfo.pincode.trim()) newErrors.pincode = 'Pincode is required';
+    if (!customerInfo.phoneNumber.trim()) newErrors.phoneNumber = 'Phone number is required';
+    else if (!/^\d{10}$/.test(customerInfo.phoneNumber)) newErrors.phoneNumber = 'Invalid phone number';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      buyNow();
+      setShowModal(false);
+    }
+  };
 
   return (
     <>
       <button
-        className="bg-black text-white active:bg-white font-bold px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
-        type="button"
+        className="w-full py-3 px-6 rounded-lg font-bold transition-all hover:opacity-90"
+        style={{
+          backgroundColor: colors.primary,
+          color: '#ffffff'
+        }}
         onClick={() => setShowModal(true)}
       >
-        Fill Details
+        Proceed to Checkout
       </button>
-      {showModal ? (
-        <div className="fixed inset-0 z-50 flex justify-center items-center bg-gray-800 bg-opacity-50 transition-opacity">
-          <div className="transition-transform w-full max-w-lg bg-white rounded-lg shadow-lg transform scale-100">
-            <div className="flex items-start justify-between p-5 border-b border-gray-300 rounded-t">
-              <h3 className="text-3xl font-semibold">General Info</h3>
-              <button className="text-black" onClick={() => setShowModal(false)}>
-                x
-              </button>
-            </div>
+
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div 
+            className="bg-white rounded-lg shadow-lg w-full max-w-md"
+            style={{
+              backgroundColor: colors.cardBg,
+              color: colors.text
+            }}
+          >
             <div className="p-6">
-            <form className="space-y-4 md:space-y-6" action="#">
-          <div>
-      <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900">Enter Full Name</label>
-<input value={name} onChange={(e)=>setName(e.target.value)} type="name" name="name" id="name" className=" border outline-0 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100" required />
-</div>
-<div>
-<label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Enter Full Address</label>
-<input value={address} onChange={(e)=>setAddress(e.target.value)} type="text" name="address" id="address" className=" border outline-0 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100" required />
-</div>
-<div>
-<label htmlFor="pincode" className="block mb-2 text-sm font-medium text-gray-900">Enter Pincode</label>
-<input value={pincode} onChange={(e)=>setPincode(e.target.value)} type="text" name="pincode" id="pincode" className=" border outline-0 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100" required />
-</div>
-<div>
-<label htmlFor="mobileNumber" className="block mb-2 text-sm font-medium text-gray-900">Enter Mobile Number</label>
-<input value={phoneNumber} onChange={(e)=>setPhoneNumber(e.target.value)} type="text" name="mobileNumber" id="mobileNumber" className=" border outline-0 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-100" required />
-</div>
-</form>
-<button onClick={()=>{buyNow(); closeModal()}} type="button" className="focus:outline-none w-full text-white bg-violet-600 hover:bg-violet-800  outline-0 font-medium rounded-lg text-sm px-5 py-2.5 ">Order Now</button>
-</div>
-<div className="flex items-center justify-end p-6 border-t border-gray-300 rounded-b">
-<button
-className="text-red-500 font-bold uppercase px-6 py-2 text-sm"
-onClick={() => setShowModal(false)}
->
-Close
-</button>
-<button
-className="text-white bg-black  font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg"
-onClick={() => setShowModal(false)}
->
-Submit
-</button>
-</div>
-</div>
-</div>
-) : null}
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold">Shipping Information</h3>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                  aria-label="Close modal"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Full Name *</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={customerInfo.name}
+                    onChange={handleInputChange}
+                    className={`w-full p-2 border rounded ${errors.name ? 'border-red-500' : ''}`}
+                    style={{
+                      backgroundColor: colors.cardBg,
+                      color: colors.text,
+                      borderColor: errors.name ? 'red' : colors.border
+                    }}
+                  />
+                  {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1">Address *</label>
+                  <textarea
+                    name="address"
+                    value={customerInfo.address}
+                    onChange={handleInputChange}
+                    rows="3"
+                    className={`w-full p-2 border rounded ${errors.address ? 'border-red-500' : ''}`}
+                    style={{
+                      backgroundColor: colors.cardBg,
+                      color: colors.text,
+                      borderColor: errors.address ? 'red' : colors.border
+                    }}
+                  />
+                  {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address}</p>}
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Pincode *</label>
+                    <input
+                      type="text"
+                      name="pincode"
+                      value={customerInfo.pincode}
+                      onChange={handleInputChange}
+                      className={`w-full p-2 border rounded ${errors.pincode ? 'border-red-500' : ''}`}
+                      style={{
+                        backgroundColor: colors.cardBg,
+                        color: colors.text,
+                        borderColor: errors.pincode ? 'red' : colors.border
+                      }}
+                    />
+                    {errors.pincode && <p className="text-red-500 text-xs mt-1">{errors.pincode}</p>}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Phone Number *</label>
+                    <input
+                      type="tel"
+                      name="phoneNumber"
+                      value={customerInfo.phoneNumber}
+                      onChange={handleInputChange}
+                      className={`w-full p-2 border rounded ${errors.phoneNumber ? 'border-red-500' : ''}`}
+                      style={{
+                        backgroundColor: colors.cardBg,
+                        color: colors.text,
+                        borderColor: errors.phoneNumber ? 'red' : colors.border
+                      }}
+                    />
+                    {errors.phoneNumber && <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>}
+                  </div>
+                </div>
+
+                <div className="mt-6 flex justify-end space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="px-4 py-2 border rounded hover:bg-gray-100"
+                    style={{
+                      borderColor: colors.border
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 text-white rounded hover:opacity-90"
+                    style={{
+                      backgroundColor: colors.primary
+                    }}
+                  >
+                    Place Order
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
 
 export default Modal;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

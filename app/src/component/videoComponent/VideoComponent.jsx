@@ -1,13 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect, useMemo } from 'react';
 import ReactPlayer from 'react-player';
+import { debounce } from 'lodash';
 import myContext from '../../context/Context';
 
 const VideoComponent = ({ title, desktopVideoUrl, mobileVideoUrl }) => {
   const context = useContext(myContext);
   const { mode } = context;
+  const [isMobile, setIsMobile] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   // Professional color scheme
-  const styles = {
+  const styles = useMemo(() => ({
     light: {
       text: '#ffffff',
       overlay: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5))',
@@ -18,31 +23,38 @@ const VideoComponent = ({ title, desktopVideoUrl, mobileVideoUrl }) => {
       overlay: 'linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.7))',
       fallbackBg: '#121212'
     }
-  };
+  }), []);
 
-  const currentStyle = mode === 'dark' ? styles.dark : styles.light;
+  const currentStyle = useMemo(() => (mode === 'dark' ? styles.dark : styles.light), [mode, styles]);
 
-  // Check if device is mobile
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  useEffect(() => {
+    const handleResize = debounce(() => {
+      setIsMobile(window.innerWidth < 768);
+    }, 100);
+    
+    // Initialize
+    if (typeof window !== 'undefined') {
+      handleResize();
+      window.addEventListener('resize', handleResize);
+    }
+    
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize);
+      }
+    };
+  }, []);
 
   return (
     <section className="relative w-full h-screen min-h-[500px] overflow-hidden">
-      {/* Modern overlay with subtle gradient */}
-      <div 
-        className="absolute inset-0 z-10 pointer-events-none"
-        style={{
-          background: currentStyle.overlay,
-        }}
-      />
-      
       {/* Centered content with modern typography */}
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-4">
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center">
         <h2 
           className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 text-center leading-tight"
           style={{
             color: currentStyle.text,
             textShadow: '0 4px 12px rgba(0, 0, 0, 0.6)',
-            maxWidth: '90%',
+            maxWidth: '100%',
             fontFamily: '"Helvetica Neue", sans-serif',
             fontWeight: 700,
             letterSpacing: '-0.5px'
@@ -51,17 +63,20 @@ const VideoComponent = ({ title, desktopVideoUrl, mobileVideoUrl }) => {
           {title}
         </h2>
       </div>
-      
+
+    
       {/* Optimized video player */}
       <ReactPlayer
         url={isMobile ? mobileVideoUrl : desktopVideoUrl}
-        playing
-        muted
+        playing={isPlaying}
+        muted={isMuted}
         loop
         width="100%"
         height="100%"
         playsinline
         playsInline
+        onReady={() => setIsReady(true)}
+        onError={() => console.error('Video playback error')}
         config={{
           file: {
             attributes: {
@@ -89,7 +104,7 @@ const VideoComponent = ({ title, desktopVideoUrl, mobileVideoUrl }) => {
         }}
         fallback={
           <div 
-            className="absolute inset-0 flex items-center justify-center bg-black"
+            className="absolute inset-0 flex items-center justify-center"
             style={{ backgroundColor: currentStyle.fallbackBg }}
           >
             <div className="animate-pulse flex space-x-4">
@@ -99,12 +114,25 @@ const VideoComponent = ({ title, desktopVideoUrl, mobileVideoUrl }) => {
         }
       />
       
+      {/* Loading state */}
+      {!isReady && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center z-0"
+          style={{ backgroundColor: currentStyle.fallbackBg }}
+        >
+          <div className="animate-pulse flex space-x-4">
+            <div className="text-white text-lg">Loading video...</div>
+          </div>
+        </div>
+      )}
+      
       {/* Subtle bottom gradient for better text readability */}
       <div 
         className="absolute bottom-0 left-0 right-0 h-40 z-10 pointer-events-none"
         style={{
           background: 'linear-gradient(to top, rgba(0,0,0,0.6), transparent)'
         }}
+        aria-hidden="true"
       />
     </section>
   );

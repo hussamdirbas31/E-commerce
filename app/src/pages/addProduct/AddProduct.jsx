@@ -23,9 +23,7 @@ function AddProduct() {
         overflow: 'hidden'
       }}
     >
-      <div 
-        className="w-full h-full flex items-center justify-center p-6"
-      >
+      <div className="w-full h-full flex items-center justify-center p-6">
         <div 
           className="w-full max-w-2xl bg-opacity-90 p-8 rounded-xl shadow-2xl"
           style={{

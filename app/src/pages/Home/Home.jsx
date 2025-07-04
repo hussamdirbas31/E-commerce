@@ -12,7 +12,6 @@ const Home = () => {
   const context = useContext(Context);
   const { mode } = context;
 
-  // Color scheme matching the design system
   const colors = {
     primary: '#800020',
     primaryHover: '#5c0018',
@@ -22,33 +21,26 @@ const Home = () => {
     border: mode === 'dark' ? '#2a2a2a' : '#e8e8e8',
   };
 
-  // Categories data
   const categories = [
     { 
       id: 1, 
-      name: "Summer Dresses", 
-      image: "https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" 
+      name: "Jacket", 
+      image: "https://image.uniqlo.com/UQ/ST3/au/imagesgoods/469775/item/augoods_52_469775_3x4.jpg?width=369" 
     },
     { 
       id: 2, 
-      name: "Casual Tops", 
-      image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" 
-    },
+      name: "Coat", 
+      image: "https://i5.walmartimages.com/seo/Herrnalise-Women-Solid-Color-Casual-Long-Sleeve-Lapel-Long-Jacket-Coat-With-Pocket-And-Belt_2c04a7ed-8629-4bef-9069-236d92233be1.d1d922c5be2d1e2a3081b3bfd9d45cd5.jpeg?odnHeight=640&odnWidth=640&odnBg=FFFFFF"},
     { 
       id: 3, 
-      name: "Denim Jackets", 
-      image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" 
+      name: "T shirts", 
+      image: "https://www.fabulous-island.com/1496-large_default/t-shirt-oversize-femme-aerobic.jpg" 
     },
     { 
       id: 4, 
-      name: "Evening Gowns", 
-      image: "https://images.unsplash.com/photo-1539008835657-9e8e9680e956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" 
-    },
-    { 
-      id: 5, 
-      name: "Office Wear", 
-      image: "https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" 
-    },
+      name: "Pants", 
+      image: "https://cdn.mos.cms.futurecdn.net/fYarhpEaQnE3xeBkAikNsQ-768-80.jpg.webp"  },
+    
     { 
       id: 6, 
       name: "Accessories", 
@@ -58,12 +50,10 @@ const Home = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
       <div className='w-full' style={{ backgroundColor: colors.background }}>
         <HeroSection image={heroImage} />
       </div>
 
-      {/* Categories Slider */}
       <section 
         className="px-4 py-12 md:px-8 lg:px-12"
         style={{ backgroundColor: colors.background }}
@@ -86,14 +76,14 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Video Component */}
+     <section className='w-full'>
       <VideoComponent 
   title="New Collections" 
   desktopVideoUrl="https://videos.pexels.com/video-files/3917524/3917524-uhd_2732_1440_25fps.mp4"
   mobileVideoUrl="https://videos.pexels.com/video-files/3894725/3894725-uhd_1440_2732_25fps.mp4"
 />
+</section>
 
-      {/* New Arrivals */}
       <section 
         className="px-4 py-12 md:px-8 lg:px-12"
         style={{ backgroundColor: colors.background }}
@@ -109,7 +99,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Special Offer Banner */}
       <SpecialOfferBanner />
     </Layout>
   )

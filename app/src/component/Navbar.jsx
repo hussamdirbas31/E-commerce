@@ -31,8 +31,8 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { id: "1", path: "clothing", title: "Clothing" },
-   
+    { id: "1", path: "shop", title: "Shop" },
+    { id: "2", path: "orders", title: "My Orders" }, // Added Orders link
   ];
 
   const handleLogout = () => auth.signOut();
@@ -198,7 +198,7 @@ const Navbar = () => {
               style={{ color: colors.primary }}
               onClick={toggleMenu}
             >
-              Artizia
+Arti
             </Link>
             <button 
               onClick={toggleMenu}

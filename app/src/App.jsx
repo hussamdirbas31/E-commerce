@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router,Route , Routes, Navigate} from 'react-router-dom'
 import Home from './pages/Home/Home'
-import Order from './pages/Order/Order';
 import Cart from './pages/cart/Cart';
 import Dashboard from './pages/Admin/Dashboard';
 import State from './context/State';
@@ -14,6 +13,7 @@ import NoPage from './pages/noPage/NoPage';
 import Cookie from 'cookie-universal'
 import {AuthProvider}  from './context/AuthContext';
 import Clothing from './pages/clothing/Clothing';
+import Orders from './pages/Order/Order';
 
 const App = () => {
 
@@ -24,10 +24,10 @@ const App = () => {
       
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/clothing" element={<Clothing />} />
+        <Route path="/shop" element={<Clothing />} />
 
-        <Route path="/order" element={
-            <Order />
+        <Route path="/orders" element={
+            <Orders />
         } />
 
         <Route path="/cart" element={<Cart />} />
@@ -63,12 +63,12 @@ export const ProtectedRoutes = ({ children }) => {
 }
 
 export const ProtectedRoutesForAdmin = ({children}) => {
-  const cookies = Cookie()
+  const cookies = Cookie();
   const admin = JSON.parse(cookies.get('ecommerce'))
   if (admin.user.email === 'hussamdirbas11@gmail.com') {
-    return children
+    return children;
   }
   else {
-    return <Navigate to='/login' />
+    return <NoPage />;
   }
 }

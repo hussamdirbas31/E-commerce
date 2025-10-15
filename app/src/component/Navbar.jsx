@@ -56,7 +56,7 @@ const Navbar = () => {
               className="text-2xl font-bold tracking-tight hover:tracking-wide transition-all duration-300"
               style={{ color: colors.primary }}
             >
-              Artizia
+              Fema
             </Link>
 
             {/* Desktop Navigation */}

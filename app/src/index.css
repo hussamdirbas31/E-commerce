@@ -3,3 +3,55 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* تحسينات الـ Scroll */
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  
+  body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* إصلاح مشكلة الـ height على الجوال */
+  @media (max-width: 768px) {
+    .hero {
+      min-height: calc(100vh - 60px) !important;
+    }
+  }
+  
+  /* تحسين أداء الـ animations */
+  * {
+    box-sizing: border-box;
+  }
+  
+  /* منع حدوث scroll أفقي */
+  .container {
+    max-width: 100%;
+  }
+  
+  /* تحسين الـ scroll experience */
+  .scroll-mt-20 {
+    scroll-margin-top: 5rem;
+  }
+  
+  /* تحسين مظهر الـ scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #800020;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #5c0018;
+  }
